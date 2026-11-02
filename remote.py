@@ -1,8 +1,10 @@
 import requests, urllib3, json, time, os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import unquote
+from dotenv import load_dotenv
 urllib3.disable_warnings()
 
+load_dotenv()
 TV_IP = os.environ["TV_IP"]
 AUTH = os.environ["VIZIO_AUTH"]
 PORT = int(os.environ.get("PORT", "8100"))
@@ -50,6 +52,7 @@ svg.i{width:26px;height:26px;fill:currentColor}
 .apps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .apps button{flex-direction:column;font-size:11px;min-height:72px;padding:10px 2px}
 .apps.nolabels .lbl{display:none}
+.lbl-toggle{display:none}
 .numbers{display:flex;flex-direction:column;gap:8px}
 .numbers-toggle{width:100%;padding:8px 0;font-size:13px}
 .grp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;background:#1d1d1d;border:1px solid #484848;border-radius:16px}
@@ -92,7 +95,7 @@ const power='<svg class=i viewBox="0 0 24 24" fill=none stroke=currentColor stro
 const b=(k,label,c='')=>`<button class="${c}" data-k="${k}">${label??k}</button>`;
 const blank='<span></span>';
 
-$('topbar').innerHTML=b('INPUT',null,'sm')+'<button class=sm id=lbl-toggle type=button>Labels: off</button>'+b('POWER',power,'sm');
+$('topbar').innerHTML=b('INPUT',null,'sm')+'<button class="sm lbl-toggle" id=lbl-toggle type=button>Labels: off</button>'+b('POWER',power,'sm');
 const home=b('HOME','<svg class=i viewBox="0 0 24 24"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg><span class=lbl>HOME</span>');
 const row=appList.map(n=>`<button data-k="${n}">${appIcons[n]||''}<span class=lbl>${n}</span></button>`);
 row.splice(1,0,home);
