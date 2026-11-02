@@ -43,9 +43,12 @@ svg.i{width:26px;height:26px;fill:currentColor}
 .apps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .apps button{flex-direction:column;font-size:11px;min-height:72px;padding:10px 2px}
 .apps button.empty{background:#222;color:#666;cursor:default}
+.numbers{display:flex;flex-direction:column;gap:8px}
+.numbers-toggle{width:100%;padding:8px 0;font-size:13px}
 .grp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;background:#1d1d1d;border:1px solid #484848;border-radius:16px}
 .grp button{padding:20px 0;font-size:20px}
 .grp button.tiny{padding:6px 0;font-size:12px;border-radius:6px}
+.grp[hidden]{display:none}
 .tr{display:grid;grid-template-columns:1fr 1fr 1.4fr 1fr 1fr;gap:8px}
 .tr button{padding:14px 0}
 .tr .big{background:#3a3a3a}
@@ -61,7 +64,7 @@ svg.i{width:26px;height:26px;fill:currentColor}
 </style>
 <div class=topbar id=topbar></div>
 <div class=apps id=apps></div>
-<div class=grp id=nums></div>
+<div class=numbers><button class=numbers-toggle id=numbers-toggle type=button aria-expanded=false aria-controls=nums>Numbers +</button><div class=grp id=nums hidden></div></div>
 <div class=tr id=tr></div>
 <div class=mid id=mid></div>
 <div class=dpad id=dpad></div>
@@ -86,6 +89,13 @@ $('topbar').innerHTML=b('INPUT',null,'sm')+b('POWER',power,'sm');
 $('apps').innerHTML=appList.map(n=>`<button data-k="${n}">${appIcons[n]||''}<span>${n}</span></button>`).join('')
  +'<button class=empty>+</button>';
 $('nums').innerHTML=['1','2','3','4','5','6','7','8','9'].map(k=>b(k,k,'tiny')).join('')+blank+b('0','0','tiny')+b('-','-','tiny');
+const numbersToggle=$('numbers-toggle');
+numbersToggle.addEventListener('click',()=>{
+  const expanded=numbersToggle.getAttribute('aria-expanded')==='true';
+  numbersToggle.setAttribute('aria-expanded',String(!expanded));
+  $('nums').hidden=expanded;
+  numbersToggle.textContent=expanded?'Numbers +':'Numbers −';
+});
 $('tr').innerHTML=b('PREV',ic('prev'))+b('REW',ic('rew'))+b('PLAY',ic('play'),'big')+b('PAUSE',ic('pause'))+b('FWD',ic('fwd'));
 $('mid').innerHTML=`<div class=pill>CH<div>${b('CH-','&minus;')}${b('CH+','+')}</div></div>`
  +`<div class=stack>${b('MUTE','MUTE','tiny')}${b('CC','CC','tiny')}</div>`
