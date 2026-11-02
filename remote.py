@@ -122,6 +122,7 @@ let timer;
 const stop=()=>clearInterval(timer);
 const start=k=>{
   stop();
+  navigator.vibrate?.(10);
   send(route(k));
   if(REPEAT.has(k)) timer=setInterval(()=>send(route(k)),120);
 };
