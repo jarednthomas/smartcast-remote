@@ -55,8 +55,8 @@ PAGE = """<!doctype html>
 <title>Remote</title>
 <style>
 body{font:16px sans-serif;background:#111;color:#eee;padding:16px;max-width:280px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
-button{padding:16px 0;background:linear-gradient(180deg,#414141 0%,#333 100%);color:#eee;border:0;border-radius:10px;box-shadow:0 4px 0 #202020,0 6px 10px #0008,inset 0 1px 0 #ffffff20;cursor:pointer;font:inherit;display:flex;align-items:center;justify-content:center;gap:6px;touch-action:manipulation;user-select:none;-webkit-user-select:none;transition:transform .08s ease,box-shadow .08s ease,background .08s ease}
-button:active{background:#07f;box-shadow:0 1px 0 #0052b8,0 2px 4px #0008,inset 0 1px 0 #ffffff30;transform:translateY(3px)}
+button{padding:16px 0;background:#383838;color:#eee;border:0;border-radius:10px;box-shadow:0 2px 0 #242424,0 3px 6px #0006;cursor:pointer;font:inherit;display:flex;align-items:center;justify-content:center;gap:6px;touch-action:manipulation;user-select:none;-webkit-user-select:none;transition:transform .08s ease,box-shadow .08s ease,background .08s ease}
+button:active{background:#07f;box-shadow:0 1px 0 #0052b8,0 1px 3px #0006;transform:translateY(1px)}
 button.sm{padding:8px 0;font-size:13px}
 button.tiny{padding:14px 0;font-size:12px;border-radius:6px}
 svg.i{width:26px;height:26px;fill:currentColor}
