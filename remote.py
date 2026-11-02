@@ -103,7 +103,7 @@ $('mid').innerHTML=`<div class=pill>CH<div>${b('CH-','&minus;')}${b('CH+','+')}<
 $('dpad').innerHTML=blank+b('UP','&#9650;')+blank
  +b('LEFT','&#9664;')+b('OK')+b('RIGHT','&#9654;')
  +blank+b('DOWN','&#9660;')+blank;
-$('sec').innerHTML=b('BACK')+b('MENU')+b('INFO')+blank+blank+b('HOME');
+$('sec').innerHTML=b('BACK')+b('MENU')+b('INFO');
 
 const REPEAT=new Set(['VOL+','VOL-']);   // keys that repeat while held
 const route=k=>(appList.includes(k)?'/a/':'/k/')+encodeURIComponent(k);
