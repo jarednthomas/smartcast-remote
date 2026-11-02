@@ -1,9 +1,11 @@
-import requests, urllib3, json, time
+import requests, urllib3, json, time, os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import unquote
-from config import TV_IP, AUTH, PORT
 urllib3.disable_warnings()
 
+TV_IP = os.environ["TV_IP"]
+AUTH = os.environ["VIZIO_AUTH"]
+PORT = int(os.environ.get("PORT", "8100"))
 H = {"AUTH": AUTH, "Content-Type": "application/json"}
 S = requests.Session()
 S.verify = False
