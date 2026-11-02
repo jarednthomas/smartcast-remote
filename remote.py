@@ -42,7 +42,6 @@ svg.i{width:26px;height:26px;fill:currentColor}
 .topbar button{padding:8px 18px;font-size:13px}
 .apps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .apps button{flex-direction:column;font-size:11px;min-height:72px;padding:10px 2px}
-.apps button.empty{background:#222;color:#666;cursor:default}
 .numbers{display:flex;flex-direction:column;gap:8px}
 .numbers-toggle{width:100%;padding:8px 0;font-size:13px}
 .grp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;background:#1d1d1d;border:1px solid #484848;border-radius:16px}
@@ -86,8 +85,9 @@ const b=(k,label,c='')=>`<button class="${c}" data-k="${k}">${label??k}</button>
 const blank='<span></span>';
 
 $('topbar').innerHTML=b('INPUT',null,'sm')+b('POWER',power,'sm');
-$('apps').innerHTML=appList.map(n=>`<button data-k="${n}">${appIcons[n]||''}<span>${n}</span></button>`).join('')
- +'<button class=empty>+</button>';
+const row=appList.map(n=>`<button data-k="${n}">${appIcons[n]||''}<span>${n}</span></button>`);
+row.splice(1,0,b('HOME'));
+$('apps').innerHTML=row.join('');
 $('nums').innerHTML=['1','2','3','4','5','6','7','8','9'].map(k=>b(k,k,'tiny')).join('')+blank+b('0','0','tiny')+b('-','-','tiny');
 const numbersToggle=$('numbers-toggle');
 numbersToggle.addEventListener('click',()=>{
