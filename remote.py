@@ -21,9 +21,14 @@ KEYS.update({"-": (6, 10), "CC": (4, 4), "PREV": (8, 2)})
 APPS = {
     "YOUTUBE": {"NAME_SPACE": 5, "APP_ID": "1", "MESSAGE": "None"},
 }
+
+APPS["YOUTUBE 2"] = dict(APPS["YOUTUBE"])
+
 APP_ICONS = {
     "YOUTUBE": '<svg width="44" height="30" viewBox="0 0 28 20"><rect width="28" height="20" rx="6" fill="#f00"/><path d="M11 5.5l7.5 4.5-7.5 4.5z" fill="#fff"/></svg>',
 }
+
+APP_ICONS["YOUTUBE 2"] = APP_ICONS["YOUTUBE"]
 
 KEYMAP = {"ArrowUp": "UP", "ArrowDown": "DOWN", "ArrowLeft": "LEFT", "ArrowRight": "RIGHT",
           "Enter": "OK", "Backspace": "BACK", "Escape": "HOME", "=": "VOL+", "-": "VOL-",
@@ -42,6 +47,7 @@ svg.i{width:26px;height:26px;fill:currentColor}
 .topbar button{padding:8px 18px;font-size:13px}
 .apps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .apps button{flex-direction:column;font-size:11px;min-height:72px;padding:10px 2px}
+.apps.nolabels .lbl{display:none}
 .numbers{display:flex;flex-direction:column;gap:8px}
 .numbers-toggle{width:100%;padding:8px 0;font-size:13px}
 .grp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;background:#1d1d1d;border:1px solid #484848;border-radius:16px}
@@ -62,7 +68,7 @@ svg.i{width:26px;height:26px;fill:currentColor}
 .sec button{padding:10px 0;font-size:13px}
 </style>
 <div class=topbar id=topbar></div>
-<div class=apps id=apps></div>
+<div class="apps nolabels" id=apps></div>
 <div class=numbers><button class=numbers-toggle id=numbers-toggle type=button aria-expanded=false aria-controls=nums>Numbers +</button><div class=grp id=nums hidden></div></div>
 <div class=tr id=tr></div>
 <div class=mid id=mid></div>
@@ -84,10 +90,15 @@ const power='<svg class=i viewBox="0 0 24 24" fill=none stroke=currentColor stro
 const b=(k,label,c='')=>`<button class="${c}" data-k="${k}">${label??k}</button>`;
 const blank='<span></span>';
 
-$('topbar').innerHTML=b('INPUT',null,'sm')+b('POWER',power,'sm');
-const row=appList.map(n=>`<button data-k="${n}">${appIcons[n]||''}<span>${n}</span></button>`);
-row.splice(1,0,b('HOME'));
+$('topbar').innerHTML=b('INPUT',null,'sm')+'<button class=sm id=lbl-toggle type=button>Labels: off</button>'+b('POWER',power,'sm');
+const home=b('HOME','<svg class=i viewBox="0 0 24 24"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg><span class=lbl>HOME</span>');
+const row=appList.map(n=>`<button data-k="${n}">${appIcons[n]||''}<span class=lbl>${n}</span></button>`);
+row.splice(1,0,home);
 $('apps').innerHTML=row.join('');
+$('lbl-toggle').addEventListener('click',e=>{
+  const off=$('apps').classList.toggle('nolabels');
+  e.currentTarget.textContent='Labels: '+(off?'off':'on');
+});
 $('nums').innerHTML=['1','2','3','4','5','6','7','8','9'].map(k=>b(k,k,'tiny')).join('')+blank+b('0','0','tiny')+b('-','-','tiny');
 const numbersToggle=$('numbers-toggle');
 numbersToggle.addEventListener('click',()=>{
