@@ -1,0 +1,9 @@
+name: smartcast
+
+services:
+  remote:
+    build: .
+    ports:
+      - "8100:8100"
+    env_file: .env
+    restart: unless-stopped
