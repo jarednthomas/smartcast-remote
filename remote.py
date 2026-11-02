@@ -37,7 +37,7 @@ KEYMAP.update({str(n): str(n) for n in range(10)})
 
 PAGE = """<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Remote</title>
 <style>
-body{font:16px sans-serif;background:#111;color:#eee;padding:16px;max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+body{font:16px sans-serif;background:#111;color:#eee;padding:16px;max-width:280px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
 button{padding:16px 0;background:#333;color:#eee;border:0;border-radius:10px;cursor:pointer;font:inherit;display:flex;align-items:center;justify-content:center;gap:6px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
 button:active{background:#07f}
 button.sm{padding:8px 0;font-size:13px}
