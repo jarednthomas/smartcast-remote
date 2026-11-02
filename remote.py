@@ -58,7 +58,7 @@ body{font:16px sans-serif;background:#111;color:#eee;padding:16px;max-width:280p
 button{padding:16px 0;background:#383838;color:#eee;border:0;border-radius:10px;box-shadow:0 2px 0 #242424,0 3px 6px #0006;cursor:pointer;font:inherit;display:flex;align-items:center;justify-content:center;gap:6px;touch-action:manipulation;user-select:none;-webkit-user-select:none;transition:transform .08s ease,box-shadow .08s ease,background .08s ease}
 button:active{background:#07f;box-shadow:0 1px 0 #0052b8,0 1px 3px #0006;transform:translateY(1px)}
 button.sm{padding:8px 0;font-size:13px}
-button.tiny{padding:14px 0;font-size:12px;border-radius:6px}
+button.tiny{padding:11px 0;font-size:12px;border-radius:6px}
 svg.i{width:26px;height:26px;fill:currentColor}
 .topbar{display:flex;justify-content:space-between;align-items:center}
 .topbar button{padding:8px 18px;font-size:13px}
