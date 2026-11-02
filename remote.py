@@ -1,4 +1,4 @@
-import requests, urllib3, json
+import requests, urllib3, json, time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import unquote
 from config import TV_IP, AUTH, PORT
@@ -148,24 +148,45 @@ PAGE = (PAGE.replace("__APPS__", json.dumps(list(APPS)))
             .replace("__AICONS__", json.dumps(APP_ICONS))
             .replace("__KEYMAP__", json.dumps(KEYMAP)))
 
+def log(msg):
+    print(time.strftime("%H:%M:%S"), msg, flush=True)
+
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, *a): pass
-    def reply(self, body, ctype="text/plain"):
-        self.send_response(200); self.send_header("Content-Type", ctype); self.end_headers()
+    def reply(self, body, ctype="text/plain", code=200):
+        self.send_response(code); self.send_header("Content-Type", ctype); self.end_headers()
         self.wfile.write(body.encode())
+    def tv(self, name, path, payload):
+        t = time.perf_counter()
+        try:
+            r = S.put(f"https://{TV_IP}:7345{path}", headers=H, timeout=5, json=payload)
+            ms = (time.perf_counter() - t) * 1000
+            log(f"{self.client_address[0]:<15} {name:<10} -> TV {r.status_code} ({ms:.0f}ms)")
+            return self.reply(str(r.status_code))
+        except requests.RequestException as e:
+            log(f"{self.client_address[0]:<15} {name:<10} -> FAILED: {type(e).__name__}")
+            return self.reply("TV unreachable", code=502)
     def do_GET(self):
         p = unquote(self.path)
         if p == "/":
+            log(f"{self.client_address[0]:<15} page loaded")
             return self.reply(PAGE, "text/html")
         if p.startswith("/k/") and p[3:] in KEYS:
             cs, c = KEYS[p[3:]]
-            r = S.put(f"https://{TV_IP}:7345/key_command/", headers=H, timeout=5,
-                json={"KEYLIST": [{"CODESET": cs, "CODE": c, "ACTION": "KEYPRESS"}]})
-            return self.reply(f"{r.status_code}")
+            return self.tv(p[3:], "/key_command/",
+                {"KEYLIST": [{"CODESET": cs, "CODE": c, "ACTION": "KEYPRESS"}]})
         if p.startswith("/a/") and p[3:] in APPS:
-            r = S.put(f"https://{TV_IP}:7345/app/launch", headers=H, timeout=5,
-                json={"VALUE": APPS[p[3:]]})
-            return self.reply(f"{r.status_code}")
+            return self.tv(p[3:], "/app/launch", {"VALUE": APPS[p[3:]]})
+        if p != "/favicon.ico":
+            log(f"{self.client_address[0]:<15} 404 {p}")
         self.send_response(404); self.end_headers()
 
-HTTPServer(("0.0.0.0", PORT), Handler).serve_forever()
+if __name__ == "__main__":
+    srv = HTTPServer(("0.0.0.0", PORT), Handler)
+    log(f"Remote running on port {PORT}, TV at {TV_IP}. Ctrl+C to stop.")
+    try:
+        srv.serve_forever()
+    except KeyboardInterrupt:
+        log("Stopping.")
+    finally:
+        srv.server_close()
